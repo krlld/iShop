@@ -1,6 +1,5 @@
 package com.kirilldikun.ishop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +20,4 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
-
-    public Image(String url) {
-        this.url = url;
-    }
 }

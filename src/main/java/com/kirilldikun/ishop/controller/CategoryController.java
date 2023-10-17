@@ -1,6 +1,6 @@
 package com.kirilldikun.ishop.controller;
 
-import com.kirilldikun.ishop.entity.Category;
+import com.kirilldikun.ishop.dto.CategoryDTO;
 import com.kirilldikun.ishop.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
@@ -21,20 +20,20 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Category>> findAll() {
-        List<Category> categoryList = categoryService.findAll();
-        return ResponseEntity.ok(categoryList);
+    public ResponseEntity<List<CategoryDTO>> findAll() {
+        List<CategoryDTO> categoryDTOList = categoryService.findAll();
+        return ResponseEntity.ok(categoryDTOList);
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@Valid @RequestBody Category category) {
-        categoryService.save(category);
+    public ResponseEntity<Void> save(@Valid @RequestBody CategoryDTO categoryDTO) {
+        categoryService.save(categoryDTO);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody Category category) {
-        categoryService.update(id, category);
+    public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO categoryDTO) {
+        categoryService.update(id, categoryDTO);
         return ResponseEntity.ok().build();
     }
 
