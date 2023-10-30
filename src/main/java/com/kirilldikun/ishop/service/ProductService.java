@@ -6,23 +6,20 @@ import com.kirilldikun.ishop.exception.CategoryNotFoundException;
 import com.kirilldikun.ishop.exception.ProductAlreadyExistsException;
 import com.kirilldikun.ishop.exception.ProductNotFoundException;
 import com.kirilldikun.ishop.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
-    private final ProductRepository productRepository;
-    private final CategoryService categoryService;
-    private final ImageService imageService;
 
-    @Autowired
-    public ProductService(ProductRepository productRepository, CategoryService categoryService, ImageService imageService) {
-        this.productRepository = productRepository;
-        this.categoryService = categoryService;
-        this.imageService = imageService;
-    }
+    private final ProductRepository productRepository;
+
+    private final CategoryService categoryService;
+
+    private final ImageService imageService;
 
     public List<ProductDTO> findAll() {
         return productRepository.findAll().stream().map(this::mapToProductDTO).toList();
@@ -40,7 +37,8 @@ public class ProductService {
         imageService.saveAll(productDTO.getImages(), product.getId());
     }
 
-    public void update(Long id, ProductDTO productDTO) throws ProductNotFoundException, CategoryNotFoundException, ProductAlreadyExistsException {
+    public void update(Long id, ProductDTO productDTO)
+            throws ProductNotFoundException, CategoryNotFoundException, ProductAlreadyExistsException {
         if (!productRepository.existsById(id)) {
             throw new ProductNotFoundException();
         }
@@ -48,7 +46,8 @@ public class ProductService {
             throw new CategoryNotFoundException();
         }
         if (productRepository.existsByName(productDTO.getName()) &&
-                !productRepository.findByName(productDTO.getName()).getId().equals(id)) {
+                !productRepository.findByName(productDTO.getName()).orElseThrow(ProductNotFoundException::new)
+                        .getId().equals(id)) {
             throw new ProductAlreadyExistsException();
         }
         Product product = mapToProduct(productDTO);

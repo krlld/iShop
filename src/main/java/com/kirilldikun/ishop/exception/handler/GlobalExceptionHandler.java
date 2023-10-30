@@ -4,12 +4,16 @@ import com.kirilldikun.ishop.exception.CategoryAlreadyExistException;
 import com.kirilldikun.ishop.exception.CategoryNotFoundException;
 import com.kirilldikun.ishop.exception.ProductAlreadyExistsException;
 import com.kirilldikun.ishop.exception.ProductNotFoundException;
+import com.kirilldikun.ishop.exception.RoleNotFoundException;
+import com.kirilldikun.ishop.exception.UserAlreadyExistsException;
+import com.kirilldikun.ishop.exception.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(CategoryAlreadyExistException.class)
     public ResponseEntity<String> handlerCategoryAlreadyExistException(CategoryAlreadyExistException exception) {
         return ResponseEntity.status(400).body("Category already exists");
@@ -28,5 +32,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<String> handlerProductNotFoundException(ProductNotFoundException exception) {
         return ResponseEntity.status(400).body("Product not found");
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<String> handlerRoleNotFoundException(RoleNotFoundException exception) {
+        return ResponseEntity.status(400).body("Role not found");
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<String> handlerUserAlreadyExistsException(UserAlreadyExistsException exception) {
+        return ResponseEntity.status(400).body("User already exists");
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handlerUserNotFoundException(UserNotFoundException exception) {
+        return ResponseEntity.status(400).body("User not found");
     }
 }

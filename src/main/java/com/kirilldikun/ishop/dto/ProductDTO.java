@@ -3,6 +3,7 @@ package com.kirilldikun.ishop.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -13,7 +14,7 @@ public class ProductDTO {
     private String name;
 
     @NotNull
-    private float price;
+    private BigDecimal price;
 
     @NotNull
     private String description;

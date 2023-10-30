@@ -5,21 +5,18 @@ import com.kirilldikun.ishop.entity.Image;
 import com.kirilldikun.ishop.exception.ProductNotFoundException;
 import com.kirilldikun.ishop.repository.ImageRepository;
 import com.kirilldikun.ishop.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ImageService {
-    private final ImageRepository imageRepository;
-    private final ProductRepository productRepository;
 
-    @Autowired
-    public ImageService(ImageRepository imageRepository, ProductRepository productRepository) {
-        this.imageRepository = imageRepository;
-        this.productRepository = productRepository;
-    }
+    private final ImageRepository imageRepository;
+
+    private final ProductRepository productRepository;
 
     public void saveAll(List<ImageDTO> imageDTOS, Long productId) {
         imageDTOS.forEach(imageDTO -> imageDTO.setProductId(productId));

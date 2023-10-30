@@ -5,19 +5,16 @@ import com.kirilldikun.ishop.entity.Category;
 import com.kirilldikun.ishop.exception.CategoryAlreadyExistException;
 import com.kirilldikun.ishop.exception.CategoryNotFoundException;
 import com.kirilldikun.ishop.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
-    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    private final CategoryRepository categoryRepository;
 
     public List<CategoryDTO> findAll() {
         return categoryRepository.findAll().stream().map(this::mapToCategoryDTO).toList();
@@ -31,12 +28,14 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-    public void update(Long id, CategoryDTO categoryDTO) throws CategoryNotFoundException, CategoryAlreadyExistException {
+    public void update(Long id, CategoryDTO categoryDTO)
+            throws CategoryNotFoundException, CategoryAlreadyExistException {
         if (!categoryRepository.existsById(id)) {
             throw new CategoryNotFoundException();
         }
         if (categoryRepository.existsByName(categoryDTO.getName()) &&
-                !categoryRepository.findByName(categoryDTO.getName()).getId().equals(id)) {
+                !categoryRepository.findByName(categoryDTO.getName()).orElseThrow(CategoryNotFoundException::new)
+                        .getId().equals(id)) {
             throw new CategoryAlreadyExistException();
         }
         Category category = mapToCategory(categoryDTO);

@@ -1,28 +1,37 @@
 package com.kirilldikun.ishop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@Data
 @Entity
 @Table(name = "persons")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Person {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "person_id", nullable = false)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String firstName;
 
-    @JsonIgnore
+    @Column(nullable = false)
+    private String lastName;
+
     @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
     private User user;
-
-    public Person(String name) {
-        this.name = name;
-    }
 }
