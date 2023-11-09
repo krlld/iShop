@@ -1,7 +1,11 @@
 package com.kirilldikun.ishop.exception.handler;
 
+import com.kirilldikun.ishop.exception.AuthorizationHeaderNotFoundException;
+import com.kirilldikun.ishop.exception.CartItemAlreadyExistsException;
+import com.kirilldikun.ishop.exception.CartItemNotFoundException;
 import com.kirilldikun.ishop.exception.CategoryAlreadyExistException;
 import com.kirilldikun.ishop.exception.CategoryNotFoundException;
+import com.kirilldikun.ishop.exception.IllegalCartItemQuantityException;
 import com.kirilldikun.ishop.exception.ProductAlreadyExistsException;
 import com.kirilldikun.ishop.exception.ProductNotFoundException;
 import com.kirilldikun.ishop.exception.RoleNotFoundException;
@@ -47,5 +51,25 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handlerUserNotFoundException(UserNotFoundException exception) {
         return ResponseEntity.status(400).body("User not found");
+    }
+
+    @ExceptionHandler(CartItemAlreadyExistsException.class)
+    public ResponseEntity<String> handlerCartItemAlreadyExistsException(CartItemAlreadyExistsException exception) {
+        return ResponseEntity.status(400).body("Cart item already exists");
+    }
+
+    @ExceptionHandler(CartItemNotFoundException.class)
+    public ResponseEntity<String> handlerCartItemNotFoundException(CartItemNotFoundException exception) {
+        return ResponseEntity.status(400).body("Cart item not found");
+    }
+
+    @ExceptionHandler(IllegalCartItemQuantityException.class)
+    public ResponseEntity<String> handlerIllegalCartItemQuantityException(IllegalCartItemQuantityException exception) {
+        return ResponseEntity.status(400).body("Illegal cart item quantity");
+    }
+
+    @ExceptionHandler(AuthorizationHeaderNotFoundException.class)
+    public ResponseEntity<String> handlerAuthorizationHeaderNotFoundException(AuthorizationHeaderNotFoundException exception) {
+        return ResponseEntity.status(401).body("Authorization not found");
     }
 }

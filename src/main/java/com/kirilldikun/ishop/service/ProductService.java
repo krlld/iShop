@@ -63,6 +63,10 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    public boolean existsById(Long id) {
+        return productRepository.existsById(id);
+    }
+
     public Product findById(Long id) throws ProductNotFoundException {
         return productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
     }

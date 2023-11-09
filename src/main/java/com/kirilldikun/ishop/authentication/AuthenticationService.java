@@ -4,7 +4,9 @@ import com.kirilldikun.ishop.configuration.JwtService;
 import com.kirilldikun.ishop.dto.PersonDTO;
 import com.kirilldikun.ishop.dto.UserDTO;
 import com.kirilldikun.ishop.entity.User;
+import com.kirilldikun.ishop.exception.AuthorizationHeaderNotFoundException;
 import com.kirilldikun.ishop.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -54,5 +56,15 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwt)
                 .build();
+    }
+
+    public UserDTO userdata(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new AuthorizationHeaderNotFoundException();
+        }
+        final String jwt = authHeader.substring(7);
+        String email = jwtService.extractUsername(jwt);
+        return userService.mapToUserDTO(userService.findByEmail(email));
     }
 }

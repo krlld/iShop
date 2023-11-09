@@ -1,5 +1,6 @@
 package com.kirilldikun.ishop.controller;
 
+import com.kirilldikun.ishop.datagenerator.Generator;
 import com.kirilldikun.ishop.dto.ProductDTO;
 import com.kirilldikun.ishop.service.ProductService;
 import jakarta.validation.Valid;
@@ -18,6 +19,11 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> findAll() {
+//        List<ProductDTO> productDTOList1 = Generator.generateFakeProducts(50);
+//        for (ProductDTO productDTO : productDTOList1) {
+//            System.out.println(productDTO);
+//            productService.save(productDTO);
+//        }
         List<ProductDTO> productDTOList = productService.findAll();
         return ResponseEntity.ok(productDTOList);
     }

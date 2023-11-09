@@ -70,11 +70,15 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new).getPerson());
     }
 
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
+    }
+
     public User findById(Long id) throws UserNotFoundException {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
-    public User findByEmail(String email){
+    public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 

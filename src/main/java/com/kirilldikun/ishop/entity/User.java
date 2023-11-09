@@ -1,5 +1,6 @@
 package com.kirilldikun.ishop.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -8,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -47,6 +49,9 @@ public class User  implements UserDetails
     @OneToOne
     @JoinColumn(name = "person_id", nullable = false)
     private Person person;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<CartItem> cartItems;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
