@@ -30,15 +30,9 @@ public class CartItemController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@Valid @RequestBody CartItemDTO cartItemDTO) {
-        cartItemService.save(cartItemDTO);
-        return ResponseEntity.ok().build();
-    }
-
-    @PatchMapping()
-    public ResponseEntity<Void> patch(@Valid @RequestBody CartItemDTO cartItemDTO) {
-        cartItemService.patch(cartItemDTO);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<CartItemDTO> save(@Valid @RequestBody CartItemDTO cartItemDTO) {
+        cartItemDTO = cartItemService.save(cartItemDTO);
+        return ResponseEntity.ok(cartItemDTO);
     }
 
     @DeleteMapping("/{id}")

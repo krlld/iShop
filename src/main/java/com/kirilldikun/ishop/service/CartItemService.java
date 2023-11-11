@@ -27,23 +27,19 @@ public class CartItemService {
         return cartItemRepository.findAll().stream().map(this::mapToCartItemDTO).toList();
     }
 
-    public CartItem save(CartItemDTO cartItemDTO) {
-        if (cartItemRepository.existsByProductIdAndUserId(cartItemDTO.getProductId(), cartItemDTO.getUserId())) {
-            throw new CartItemAlreadyExistsException();
-        }
+    public CartItemDTO save(CartItemDTO cartItemDTO) {
         if (!productService.existsById(cartItemDTO.getProductId())) {
             throw new ProductNotFoundException();
         }
         if (!userService.existsById(cartItemDTO.getUserId())) {
             throw new UserNotFoundException();
         }
-        CartItem cartItem = mapToCartItem(cartItemDTO);
-        return cartItemRepository.save(cartItem);
-    }
-
-    public CartItem patch(CartItemDTO cartItemDTO) {
         if (!cartItemRepository.existsByProductIdAndUserId(cartItemDTO.getProductId(), cartItemDTO.getUserId())) {
-            throw new CartItemNotFoundException();
+            if (cartItemDTO.getQuantity() <= 0) {
+                throw new IllegalCartItemQuantityException();
+            }
+            CartItem cartItem = mapToCartItem(cartItemDTO);
+            return mapToCartItemDTO(cartItemRepository.save(cartItem));
         }
         CartItem cartItem = cartItemRepository
                 .findByProductIdAndUserId(cartItemDTO.getProductId(), cartItemDTO.getUserId())
@@ -52,7 +48,7 @@ public class CartItemService {
             throw new IllegalCartItemQuantityException();
         }
         cartItem.setQuantity(cartItem.getQuantity() + cartItemDTO.getQuantity());
-        return cartItemRepository.save(cartItem);
+        return mapToCartItemDTO(cartItemRepository.save(cartItem));
     }
 
     public void delete(Long id) {
