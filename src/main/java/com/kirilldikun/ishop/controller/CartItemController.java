@@ -25,8 +25,9 @@ public class CartItemController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<List<CartItemResponse>> findAllByUserId(@PathVariable Long userId) {
-        List<CartItemResponse> cartItemDTOList = cartItemService.findAllByUserId(userId);
-        return ResponseEntity.ok(cartItemDTOList);
+        List<CartItemResponse> cartItemResponsesList = cartItemService.findAllByUserId(userId).stream()
+                .map(cartItemService::mapToCartItemResponse).toList();
+        return ResponseEntity.ok(cartItemResponsesList);
     }
 
     @PostMapping

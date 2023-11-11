@@ -24,11 +24,11 @@ public class CartItemService {
 
     private final ProductService productService;
 
-    public List<CartItemResponse> findAllByUserId(Long userId) {
+    public List<CartItem> findAllByUserId(Long userId) {
         if (!userService.existsById(userId)) {
             throw new UserNotFoundException();
         }
-        return cartItemRepository.findAllByUserId(userId).stream().map(this::mapToCartItemResponse).toList();
+        return cartItemRepository.findAllByUserId(userId);
     }
 
     public CartItemDTO save(CartItemDTO cartItemDTO) {
