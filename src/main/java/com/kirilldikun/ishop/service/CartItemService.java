@@ -62,6 +62,13 @@ public class CartItemService {
         cartItemRepository.deleteById(id);
     }
 
+    public void clear(Long userId) {
+        if (!userService.existsById(userId)) {
+            throw new UserNotFoundException();
+        }
+        cartItemRepository.deleteAllByUserId(userId);
+    }
+
     private CartItemDTO mapToCartItemDTO(CartItem cartItem) {
         return CartItemDTO.builder()
                 .id(cartItem.getId())
