@@ -25,6 +25,9 @@ public class CartItemService {
     private final ProductService productService;
 
     public List<CartItemResponse> findAllByUserId(Long userId) {
+        if (!userService.existsById(userId)) {
+            throw new UserNotFoundException();
+        }
         return cartItemRepository.findAllByUserId(userId).stream().map(this::mapToCartItemResponse).toList();
     }
 
