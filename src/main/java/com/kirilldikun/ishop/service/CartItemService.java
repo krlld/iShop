@@ -1,6 +1,7 @@
 package com.kirilldikun.ishop.service;
 
 import com.kirilldikun.ishop.dto.CartItemDTO;
+import com.kirilldikun.ishop.dto.CartItemResponse;
 import com.kirilldikun.ishop.entity.CartItem;
 import com.kirilldikun.ishop.exception.CartItemAlreadyExistsException;
 import com.kirilldikun.ishop.exception.CartItemNotFoundException;
@@ -23,8 +24,8 @@ public class CartItemService {
 
     private final ProductService productService;
 
-    public List<CartItemDTO> findAll() {
-        return cartItemRepository.findAll().stream().map(this::mapToCartItemDTO).toList();
+    public List<CartItemResponse> findAllByUserId(Long userId) {
+        return cartItemRepository.findAllByUserId(userId).stream().map(this::mapToCartItemResponse).toList();
     }
 
     public CartItemDTO save(CartItemDTO cartItemDTO) {
@@ -73,6 +74,15 @@ public class CartItemService {
                 .quantity(cartItemDTO.getQuantity())
                 .user(userService.findById(cartItemDTO.getUserId()))
                 .product(productService.findById(cartItemDTO.getProductId()))
+                .build();
+    }
+
+    public CartItemResponse mapToCartItemResponse(CartItem cartItem) {
+        return CartItemResponse.builder()
+                .id(cartItem.getId())
+                .quantity(cartItem.getQuantity())
+                .userId(cartItem.getUser().getId())
+                .product(productService.mapToProductDTO(cartItem.getProduct()))
                 .build();
     }
 }
