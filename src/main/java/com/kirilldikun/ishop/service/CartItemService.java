@@ -3,7 +3,6 @@ package com.kirilldikun.ishop.service;
 import com.kirilldikun.ishop.dto.CartItemDTO;
 import com.kirilldikun.ishop.dto.CartItemResponse;
 import com.kirilldikun.ishop.entity.CartItem;
-import com.kirilldikun.ishop.exception.CartItemAlreadyExistsException;
 import com.kirilldikun.ishop.exception.CartItemNotFoundException;
 import com.kirilldikun.ishop.exception.IllegalCartItemQuantityException;
 import com.kirilldikun.ishop.exception.ProductNotFoundException;
