@@ -1,6 +1,7 @@
 package com.kirilldikun.ishop.repository;
 
 import com.kirilldikun.ishop.entity.CartItem;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +15,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     Optional<CartItem> findByProductIdAndUserId(Long productId, Long userId);
 
-    List<CartItem> findAllByUserId(Long userId);
+    List<CartItem> findAllByUserId(Long userId, Sort id);
 
     void deleteAllByUserId(Long userId);
 }

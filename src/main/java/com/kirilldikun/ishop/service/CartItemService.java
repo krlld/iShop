@@ -9,6 +9,7 @@ import com.kirilldikun.ishop.exception.ProductNotFoundException;
 import com.kirilldikun.ishop.exception.UserNotFoundException;
 import com.kirilldikun.ishop.repository.CartItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class CartItemService {
         if (!userService.existsById(userId)) {
             throw new UserNotFoundException();
         }
-        return cartItemRepository.findAllByUserId(userId);
+        return cartItemRepository.findAllByUserId(userId, Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public CartItemDTO save(CartItemDTO cartItemDTO) {
