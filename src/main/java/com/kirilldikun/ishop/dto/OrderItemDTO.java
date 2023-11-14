@@ -22,7 +22,7 @@ public class OrderItemDTO {
     private BigDecimal price;
 
     @NotNull
-    private Long productId;
+    private ProductDTO productDTO;
 
     @NotNull
     private Long orderId;

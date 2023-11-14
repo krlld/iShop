@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,6 +31,8 @@ public class OrderService {
     private final UserService userService;
 
     private final CartItemService cartItemService;
+
+    private final ProductService productService;
 
     @Transactional
     public Order createOrderFromUserCart(OrderRequest orderRequest) {
@@ -57,6 +60,14 @@ public class OrderService {
         return order;
     }
 
+    public List<OrderResponse> findAllByUserId(Long userId) {
+        if (!userService.existsById(userId)) {
+            throw new UserNotFoundException();
+        }
+        List<Order> orders = orderRepository.findAllByUserId(userId);
+        return orders.stream().map(this::mapToOrderResponse).toList();
+    }
+
     public OrderItem mapToOrderItem(CartItem cartItem, Long orderId) {
         return OrderItem.builder()
                 .quantity(cartItem.getQuantity())
@@ -71,7 +82,7 @@ public class OrderService {
                 .id(orderItem.getId())
                 .quantity(orderItem.getQuantity())
                 .price(orderItem.getPrice())
-                .productId(orderItem.getProduct().getId())
+                .productDTO(productService.mapToProductDTO(orderItem.getProduct()))
                 .orderId(orderItem.getOrder().getId())
                 .build();
     }
@@ -84,6 +95,10 @@ public class OrderService {
                 .orderStatus(order.getOrderStatus())
                 .userId(order.getUser().getId())
                 .orderItems(order.getOrderItems().stream().map(this::mapToOrderItemDTO).toList())
+                .total(order.getOrderItems().stream()
+                        .map(item -> item.getPrice().multiply(new BigDecimal(item.getQuantity())))
+                        .reduce(BigDecimal::add)
+                        .orElseThrow())
                 .build();
     }
 }
