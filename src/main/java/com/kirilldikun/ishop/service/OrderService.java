@@ -13,6 +13,7 @@ import com.kirilldikun.ishop.exception.UserNotFoundException;
 import com.kirilldikun.ishop.repository.OrderItemRepository;
 import com.kirilldikun.ishop.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,7 +65,7 @@ public class OrderService {
         if (!userService.existsById(userId)) {
             throw new UserNotFoundException();
         }
-        List<Order> orders = orderRepository.findAllByUserId(userId);
+        List<Order> orders = orderRepository.findAllByUserId(userId, Sort.by(Sort.Direction.DESC, "id"));
         return orders.stream().map(this::mapToOrderResponse).toList();
     }
 
