@@ -7,6 +7,7 @@ import com.kirilldikun.ishop.exception.ProductNotFoundException;
 import com.kirilldikun.ishop.exception.UserNotFoundException;
 import com.kirilldikun.ishop.repository.FavoriteItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class FavoriteItemService {
         if (!userService.existsById(userId)) {
             throw new UserNotFoundException();
         }
-        return favoriteItemRepository.findAllByUserId(userId).stream()
+        return favoriteItemRepository.findAllByUserId(userId, Sort.by(Sort.Direction.DESC, "id")).stream()
                 .map(this::mapToFavoriteItemResponse).toList();
     }
 
