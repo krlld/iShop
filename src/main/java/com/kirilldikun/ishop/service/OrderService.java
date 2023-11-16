@@ -8,6 +8,7 @@ import com.kirilldikun.ishop.entity.Order;
 import com.kirilldikun.ishop.entity.OrderItem;
 import com.kirilldikun.ishop.entity.OrderStatus;
 import com.kirilldikun.ishop.exception.EmptyCartException;
+import com.kirilldikun.ishop.exception.OrderAlreadyDeliveredException;
 import com.kirilldikun.ishop.exception.OrderNotFoundException;
 import com.kirilldikun.ishop.exception.UserNotFoundException;
 import com.kirilldikun.ishop.repository.OrderItemRepository;
@@ -67,6 +68,15 @@ public class OrderService {
         }
         List<Order> orders = orderRepository.findAllByUserId(userId, Sort.by(Sort.Direction.DESC, "id"));
         return orders.stream().map(this::mapToOrderResponse).toList();
+    }
+
+    public void confirmDelivery(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        if(order.getOrderStatus().equals(OrderStatus.DELIVERED)) {
+            throw new OrderAlreadyDeliveredException();
+        }
+        order.setOrderStatus(OrderStatus.DELIVERED);
+        orderRepository.save(order);
     }
 
     public OrderItem mapToOrderItem(CartItem cartItem, Long orderId) {
