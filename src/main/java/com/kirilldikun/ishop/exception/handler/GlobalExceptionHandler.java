@@ -6,6 +6,8 @@ import com.kirilldikun.ishop.exception.CartItemNotFoundException;
 import com.kirilldikun.ishop.exception.CategoryAlreadyExistException;
 import com.kirilldikun.ishop.exception.CategoryNotFoundException;
 import com.kirilldikun.ishop.exception.IllegalCartItemQuantityException;
+import com.kirilldikun.ishop.exception.OrderAlreadyDeliveredException;
+import com.kirilldikun.ishop.exception.OrderNotFoundException;
 import com.kirilldikun.ishop.exception.ProductAlreadyExistsException;
 import com.kirilldikun.ishop.exception.ProductNotFoundException;
 import com.kirilldikun.ishop.exception.RoleNotFoundException;
@@ -68,8 +70,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(400).body("Illegal cart item quantity");
     }
 
-    @ExceptionHandler(AuthorizationHeaderNotFoundException.class)
-    public ResponseEntity<String> handlerAuthorizationHeaderNotFoundException(AuthorizationHeaderNotFoundException exception) {
-        return ResponseEntity.status(401).body("Authorization not found");
+    @ExceptionHandler(OrderAlreadyDeliveredException.class)
+    public ResponseEntity<String> handlerOrderAlreadyDeliveredException(OrderAlreadyDeliveredException exception) {
+        return ResponseEntity.status(401).body("Order already delivered");
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<String> handlerOrderNotFoundException(OrderNotFoundException exception) {
+        return ResponseEntity.status(401).body("Order not found");
     }
 }
