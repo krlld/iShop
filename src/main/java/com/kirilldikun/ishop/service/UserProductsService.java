@@ -25,11 +25,12 @@ public class UserProductsService {
 
     private final ImageService imageService;
 
-    public Page<UserProductsResponse> findAllProductsWithUserInfo(Long userId, Pageable pageable) {
+    public Page<UserProductsResponse> findAllProductsWithUserInfo(Long userId, String query, Pageable pageable) {
         if (!userService.existsById(userId)) {
             throw new UserNotFoundException();
         }
-        Page<Product> products = productRepository.findAll(pageable);
+        Page<Product> products = productRepository
+                .findAllByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(query, query, pageable);
         return products.map(product -> mapToUserProductsResponse(product, userId));
     }
 
